@@ -28,19 +28,20 @@ router.get("/:id", async (req, res) => {
 
 });
 
-// // Add a score to a grade entry
-// router.patch("/:id/add", async (req, res) => {
-//   // let collection = await db.collection("grades");
-//   let query = { _id: new ObjectId(req.params.id) };
+//add score
 
-//   let result = await collection.updateOne(query, {
-//     $push: { scores: req.body },
-//   });
+router.patch('/:id/scores/add', async (req, res) => {
+  // find the grade to update
+  const grade = await Grade.findOne({_id: req.params.id});
+ 
+  if (!grade) return res.send('Grade not found!')
+  // add the new score (req.body) to the scores array
+  grade.scores.push(req.body);
+  // save doc
+  await grade.save();
+  res.send(grade);
 
-//   if (!result) res.send("Not found").status(404);
-//   else res.send(result).status(200);
-// });
-
+});
 // // Remove a score from a grade entry
 // router.patch("/:id/remove", async (req, res) => {
 //   let collection = await db.collection("grades");
@@ -118,10 +119,12 @@ router.get("/class/:id", async (req, res) => {
   }
 });
 
-// // Update a class id
-// router.patch("/class/:id", async (req, res) => {
-//   // let collection = await db.collection("grades");
-//   let query = { class_id: Number(req.params.id) };
+
+//? put
+router.put('/class/:id', async (req, res) => {
+  const updatedGrade = await Grade.findByIdAndUpdate(req.params.id, req.body, {new:true});
+  res.json(updatedGrade);
+});
 
 //   let result = await collection.updateMany(query, {
 //     $set: { class_id: req.body.class_id },
