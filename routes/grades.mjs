@@ -32,7 +32,7 @@ router.get("/:id", async (req, res) => {
 
 router.patch('/:id/scores/add', async (req, res) => {
   // find the grade to update
-  const grade = await Grade.findOne({_id: req.params.id});
+  const grade = await Grades.findOne({_id: req.params.id});
  
   if (!grade) return res.send('Grade not found!')
   // add the new score (req.body) to the scores array
@@ -122,7 +122,7 @@ router.get("/class/:id", async (req, res) => {
 
 //? put
 router.put('/class/:id', async (req, res) => {
-  const updatedGrade = await Grade.findByIdAndUpdate(req.params.id, req.body, {new:true});
+  const updatedGrade = await Grades.findByIdAndUpdate(req.params.id, req.body, {new:true});
   res.json(updatedGrade);
 });
 
